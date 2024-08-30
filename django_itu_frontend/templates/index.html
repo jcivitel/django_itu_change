@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <title>ITU Data Scraper</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function startScraping() {
+            var filterDate = $('#filter-date').val();
+            $.get('/start-scraping/', {filter_date: filterDate}, function (data) {
+                $('#task-id').text(data.task_id);
+                checkProgress(data.task_id);
+            });
+        }
+
+        function checkProgress(taskId) {
+            $.get('/get-progress/', {task_id: taskId}, function (data) {
+                $('#progress').text(data.state);
+                if (data.state === 'SUCCESS') {
+                    $('#result').html('Total updates: ' + data.total_updates + '<br>' +
+                        'Countries: ' + JSON.stringify(data.countries));
+                } else {
+                    $('#result').html('Total updates: ' + data.total_updates + '<br>' +
+                        'Countries: ' + JSON.stringify(data.countries));
+                    setTimeout(function () {
+                        checkProgress(taskId);
+                    }, 1000);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>ITU Data Scraper</h1>
+<input type="date" id="filter-date">
+<button onclick="startScraping()">Start Scraping</button>
+<p>Task ID: <span id="task-id"></span></p>
+<p>Progress: <span id="progress"></span></p>
+<div id="result"></div>
+</body>
+</html>
