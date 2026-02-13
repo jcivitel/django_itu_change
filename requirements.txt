@@ -23,7 +23,7 @@ prompt_toolkit==3.0.47
 python-dateutil==2.9.0.post0
 six==1.16.0
 soupsieve==2.6
-sqlparse==0.5.1
+sqlparse==0.5.4
 tabulate==0.9.0
 tzdata==2024.1
 vine==5.1.0
